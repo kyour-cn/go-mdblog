@@ -1,0 +1,85 @@
+/*分页*/
+.pagination {
+	margin: 0;
+	padding: 20px;
+	text-align: center;
+	font-size: 12px;
+	display: block;
+}
+.pagination ul {
+	display: inline-block;
+ *display: inline;
+ *zoom: 1;
+	margin-left: 0;
+	margin-bottom: 0;
+	padding: 0
+}
+.pagination ul > li {
+	display: inline;
+}
+.pagination ul > li > a, .pagination ul > li > span {
+	margin: 0 2px;
+	float: left;
+	padding: 5px 12px;
+	background-color: #DDD;
+	color: #666;
+	border-radius: 2px;
+	opacity: .88;
+	filter: alpha(opacity=88);
+}
+.pagination ul > li > a:hover, .pagination ul > li > a:focus {
+	opacity: 1;
+}
+.pagination ul > .active > a, .pagination ul > .active > span {
+	background-color: #45B6F7;
+	color: #FFF;
+}
+.pagination ul > .active > a, .pagination ul > .active > span {
+	cursor: default;
+}
+.pagination ul > li > span, .pagination ul > .disabled > span, .pagination ul > .disabled > a, .pagination ul > .disabled > a:hover, .pagination ul > .disabled > a:focus {
+	color: #999999;
+	background-color: transparent;
+	cursor: default;
+}
+/*分页加载*/
+.pagination-loading {
+	text-align: center;
+	padding: 15px 0;
+}
+.pagination ul > li.prev-page, .pagination ul > li.next-page {
+	display: inline
+}
+.pagination ul > li.next-page a {
+	background-color: #45B6F7;
+	color: #fff;
+}
+
+li.active {
+	background: #FFF;
+	opacity: .9;
+	filter: alpha(opacity=90);
+}
+
+.btn-default:hover, .btn-default:focus, .btn-default:active, .btn-default.active, .open > .dropdown-toggle.btn-default {
+	border-color: #BBB;
+	color: #444;
+}
+.btn-primary {
+	background-color: #3399CC;
+	border-color: #3399CC;
+}
+.btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .open > .dropdown-toggle.btn-primary {
+	background-color: #3399CC;
+	border-color: #3399CC;
+	opacity: 0.85;
+	filter: alpha(opacity=85);
+}
+.btn-danger {
+	background-color: #FF5E52;
+	border-color: #FF5E52;
+}
+.btn-danger:hover, .btn-danger:focus, .btn-danger:active, .btn-danger.active, .open > .dropdown-toggle.btn-danger {
+	background-color: #EF4639;
+	border-color: #EF4639;
+}

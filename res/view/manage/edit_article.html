@@ -1,0 +1,109 @@
+{{ define "content"}}
+<section class="container">
+<link rel="stylesheet" href="/static/editor.md/css/editormd.css" />
+  <div class="content-wrap">
+    <div class="content" style="margin-right: 0px;">
+
+        <form id="edit-form" style="padding:10px 0;" method="post" onsubmit="return SubmitForm()">
+          <div class="form-group">
+            <label>文章分类</label>
+            <select class="form-control" name="class">
+                {{range .class}}
+                <option {{if eq .Id $.article.Class}}selected{{end}} value="{{.Id}}">{{.Name}}</option>
+                {{end}}
+            </select>
+          </div>
+          <div class="form-group">
+            <label>文章标题</label>
+            <input type="text" class="form-control" name="title" value="{{.article.Title}}" placeholder="不大于50字">
+          </div>
+          <div class="form-group">
+            <label>封面图</label>
+            <input type="text" class="form-control" name="cover" value="{{.article.Cover}}" placeholder="图片链接">
+          </div>
+          <div class="checkbox">
+            <label>
+              <input type="checkbox" checked>是否原创？
+            </label>
+          </div>
+          <div class="form-group">
+            <label>文章简介（500字以内）</label>
+            <textarea class="form-control" rows="3" name="introduce">{{.article.Introduce}}</textarea>
+          </div>
+
+          <label>文章内容</label>
+          <div id="editormd">
+           <textarea style="display:none;" name="content">{{.article.Content}}</textarea>
+           </div>
+           <button type="submit" class="btn btn-success">开始提交</button>
+           <button type="button" class="btn btn-default" onclick="history.go(-1);">返回</button>
+        </form>
+    </div>
+  </div>
+
+  {{ end }}
+
+  {{/* 定义尾部 */}}
+  {{ define "bottom"}}
+
+    <!-- editor.md -->
+    <script src="/static/editor.md/editormd.min.js"></script>
+
+    <script type="text/javascript">
+		var aEditor;
+
+        $(function() {
+            aEditor = editormd("editormd", {
+                width   : "100%",
+                height  : 640,
+                syncScrolling : "single",
+                path    : "/static/editor.md/lib/"
+            });
+        });
+
+        //提交
+        function SubmitForm(){
+
+            //验证表单
+            var form = $("#edit-form").serializeArray();
+
+            var values = {};
+            for(var i in form){
+                values[form[i].name] = form[i].value;
+            }
+
+            if(values.title.length < 5 || values.title.length > 50){
+                alert("标题长度不得小于5或大于50")
+                return false;
+            }
+
+            if(values.content.length  == 0){
+                alert("请填写内容")
+                return false;
+            }
+
+            //提交
+            $.ajax({
+                url:'/manage/editArticle/{{.article.Id}}',
+                type:'post',
+                data:form,
+                // dataType:'json',
+                success:function(ret){
+                    alert(ret.message);
+                    if(ret.status){
+                        window.location.href = '/article/{{.article.Id}}';
+                    }
+                },
+                error:function(err){
+                    alert(JSON.stringify(err))
+                }
+            });
+
+            // var md = aEditor.getMarkdown();
+            // alert(JSON.stringify(values))
+
+            return false;
+        }
+    </script>
+
+  {{ end }}

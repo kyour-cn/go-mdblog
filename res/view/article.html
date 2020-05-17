@@ -1,0 +1,205 @@
+{{ define "content"}}
+<section class="container">
+<link rel="stylesheet" href="/static/editor.md/css/editormd.preview.css" />
+
+  <div class="content-wrap">
+    <div class="content">
+      <header class="article-header">
+        <h1 class="article-title">{{.article.Title}}</h1>
+        <div class="article-meta">
+            <span class="item article-meta-time">
+          <time class="time" data-toggle="tooltip" data-placement="bottom" title="发布时间"><i class="glyphicon glyphicon-time"></i> {{date "Y-m-d H:i:s" .article.Edittime}}</time>
+          </span>
+          <span class="item article-meta-source" data-toggle="tooltip" data-placement="bottom" title="文章来源">
+              <i class="glyphicon glyphicon-globe"></i> 第一PHP社区
+          </span>
+          <span class="item article-meta-category" data-toggle="tooltip" data-placement="bottom" title="文章分类">
+              <i class="glyphicon glyphicon-list"></i> <a href="program" title="">后端程序</a>
+          </span>
+          <span class="item article-meta-views" data-toggle="tooltip" data-placement="bottom" title="查看次数">
+              <i class="glyphicon glyphicon-eye-open"></i> 共{{.article.Pv}}人围观
+          </span>
+          <span class="item article-meta-comment" data-toggle="tooltip" data-placement="bottom" title="评论次数">
+              <i class="glyphicon glyphicon-comment"></i> 0个评论
+          </span>
+      </div>
+      </header>
+      <!-- <article class="article-content"> -->
+
+      <div id="editormd-view">
+         <textarea style="display:none;" name="editormd-markdown-doc">
+
+         </textarea>
+      </div>
+      <div id="editormd-view2">
+          <textarea id="append-test" style="display:none;">
+
+{{.article.Content}}
+        </textarea>
+      </div>
+
+        <p class="article-copyright hidden-xs">未经允许不得转载：<a href="/">{{.site.site_name}}</a> » {{.article.Title}}</p>
+
+      <!-- </article> -->
+      <div class="article-tags">标签：<a href="" rel="tag">PHP</a></div>
+
+      {{if .user}}{{if eq .article.Uid .user.Uid}}
+      	<hr/>
+        文章管理：
+        <a href="/manage/editArticle/{{.article.Id}}">
+            <button type="button" class="btn btn-default btn-xs">
+                <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>编辑文章
+            </button>
+        </a>
+            &nbsp;
+        <a  data-toggle="modal" data-target="#delArticle" class="login" rel="nofollow">
+            <button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#myModal">
+                <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>删除文章
+            </button>
+        </a>
+	    <hr/>
+      {{end}}{{end}}
+
+      <div class="relates">
+        <div class="title">
+          <h3>相关推荐</h3>
+        </div>
+        <ul>
+          <li><a href="article.html">php如何判断一个日期的格式是否正确</a></li>
+          <li><a href="article.html">php如何判断一个日期的格式是否正确</a></li>
+          <li><a href="article.html">php如何判断一个日期的格式是否正确</a></li>
+          <li><a href="article.html">php如何判断一个日期的格式是否正确</a></li>
+          <li><a href="article.html">php如何判断一个日期的格式是否正确</a></li>
+        </ul>
+      </div>
+      <div class="title" id="comment">
+        <h3>评论 <small>抢沙发</small></h3>
+      </div>
+      {{if .user}}
+      <div id="respond">
+        <form action="" method="post" id="comment-form">
+          <div class="comment">
+            <div class="comment-title"><img class="avatar" src="{{if ne .user nil}}{{default .user.Avatar "/static/images/icon/icon.png"}}{{else}}/static/images/icon/icon.png{{end}}" alt="" /></div>
+            <div class="comment-box">
+              <textarea placeholder="您的评论可以一针见血" name="comment" id="comment-textarea" cols="100%" rows="3" tabindex="1" ></textarea>
+              <div class="comment-ctrl"> <span class="emotion"><img src="/static/images/face/5.png" width="20" height="20" alt="" />表情</span>
+                <div class="comment-prompt"> <i class="fa fa-spin fa-circle-o-notch"></i> <span class="comment-prompt-text"></span> </div>
+                <input type="hidden" value="{{.article.Id}}" class="articleid" />
+                <button type="submit" name="comment-submit" id="comment-submit" tabindex="5" articleid="1">评论</button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      {{else}}
+      <div id="respond">
+        <div class="comment-signarea">
+          <h3 class="text-muted">评论前必须登录！</h3>
+          <p> <a href="javascript:;" data-toggle="modal" data-target="#loginModal" class="btn btn-primary login" rel="nofollow">立即登录</a> &nbsp; <a href="/user/regist" class="btn btn-default register" rel="nofollow">注册</a> </p>
+          <!-- <h3 class="text-muted">当前文章禁止评论</h3> -->
+        </div>
+      </div>
+      {{end}}
+      <div id="postcomments">
+        <ol class="commentlist">
+          <li class="comment-content"><span class="comment-f">#1</span>
+            <div class="comment-avatar"><img class="avatar" src="/static/images/icon/icon.png" alt="" /></div>
+            <div class="comment-main">
+              <p><span class="address">Kyour</span><span class="time">{{date "" 0}}</span><br />
+                请自觉遵守相关法律，禁止发布违规违法内容！</p>
+            </div>
+          </li>
+          <!-- <li class="comment-content"><span class="comment-f">#2</span>
+            <div class="comment-avatar"><img class="avatar" src="/static/images/icon/icon.png" alt="" draggable="false"></div>
+            <div class="comment-main">
+              <p><span class="address">游客爸爸</span><span class="time">(2016-01-06)</span><br>
+                楼上傻逼</p><span class="address">管理员：</span>你找打呢？
+            </div>
+          </li> -->
+        </ol>
+        {{range .comments}}
+        <li class="comment-content"><span class="comment-f">#{{.User.Uid}}</span>
+          <div class="comment-avatar"><img class="avatar" src="/static/images/icon/icon.png" alt="" draggable="false"></div>
+          <div class="comment-main">
+            <p><span class="address">{{.User.Uname}}</span><span class="time">{{date "" .Time}}</span><br>
+              {{.Content}}
+          </div>
+        </li>
+        {{end}}
+        <div class="quotes"><span class="disabled">首页</span><span class="disabled">上一页</span><a class="current">1</a><a href="">2</a><span class="disabled">下一页</span><span class="disabled">尾页</span></div>
+      </div>
+    </div>
+  </div>
+  <!--删除文章-->
+  <div class="modal fade user-select" id="delArticle" tabindex="-1" role="dialog" aria-labelledby="delArticleModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="delArticleModalLabel" style="cursor:default;">您确定要删除这篇文章？</h4>
+      </div>
+      <div class="modal-body"> <img src="/static/images/baoman/baoman_01.gif" alt="深思熟虑" />
+        <p style="padding:15px 15px 15px 100px; position:absolute; top:15px; cursor:default;">删除文章后仍然可以在回收站中恢复，您确定要移入回收站吗？</p>
+      </div>
+      <div class="modal-footer">
+        <a class="btn btn-primary" href="/manage/delArticle/{{.article.Id}}">确定</a>
+        <buttion type="button" class="btn btn-default" data-dismiss="modal">取消</buttion>
+      </div>
+    </div>
+  </div>
+  </div>
+  {{ end }}
+
+  {{/* 定义尾部 */}}
+  {{ define "bottom"}}
+
+  {{if .user}}
+
+  <script src="/static/js/jquery.qqFace.js"></script>
+  <script type="text/javascript">
+  $(function(){
+  	$('.emotion').qqFace({
+  		id : 'facebox',
+  		assign:'comment-textarea',
+  		path:'/static/images/arclist/'	//表情存放的路径
+  	});
+   });
+   </script>
+   {{end}}
+
+   <!-- editor.md -->
+    <script src="/static/editor.md/lib/marked.min.js"></script>
+    <script src="/static/editor.md/lib/prettify.min.js"></script>
+
+    <script src="/static/editor.md/lib/raphael.min.js"></script>
+    <script src="/static/editor.md/lib/underscore.min.js"></script>
+    <script src="/static/editor.md/lib/sequence-diagram.min.js"></script>
+    <script src="/static/editor.md/lib/flowchart.min.js"></script>
+    <script src="/static/editor.md/lib/jquery.flowchart.min.js"></script>
+
+    <script src="/static/editor.md/editormd.js"></script>
+    <script type="text/javascript">
+    $(function() {
+
+        var testEditormdView, testEditormdView2;
+
+        testEditormdView = editormd.markdownToHTML("editormd-view", {
+        markdown        : $("#append-test").text(),
+        htmlDecode      : "style,script,iframe",  // you can filter tags decode
+           //toc             : false,
+           tocm            : true,    // Using [TOCM]
+        //    tocContainer    : "#custom-toc-container", // 自定义 ToC 容器层
+           //gfm             : false,
+           //tocDropdown     : true,
+           markdownSourceCode : false, // 是否保留 Markdown 源码，即是否删除保存源码的 Textarea 标签
+           emoji           : true,
+           taskList        : true,
+           tex             : true,  // 默认不解析
+           flowChart       : true,  // 默认不解析
+           sequenceDiagram : true,  // 默认不解析
+       })
+
+    });
+    </script>
+
+  {{ end }}
